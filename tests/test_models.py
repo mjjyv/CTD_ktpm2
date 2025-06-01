@@ -12,7 +12,7 @@ def setup_db():
     db_session.remove()
 
 
-def test_product_creation():
+def test_product_creation(setup_db):
     """Test creating a product in the database."""
     product = Product(name="Laptop", price=1000.0)
     db_session.add(product)
