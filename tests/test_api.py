@@ -3,7 +3,6 @@ from src.app import app
 from src.database import init_db, db_session, Base, engine
 
 
-
 @pytest.fixture
 def client():
     app.config["TESTING"] = True
