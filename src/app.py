@@ -39,13 +39,16 @@ def get_products():
     )
 
 
-@app.route('/products/<int:product_id>', methods=['GET'])
+@app.route("/products/<int:product_id>", methods=["GET"])
 def get_product(product_id):
     """Retrieve a product by ID."""
     product = Product.query.get(product_id)
     if not product:
-        return jsonify({'error': 'Product not found'}), 404
-    return jsonify({'id': product.id, 'name': product.name, 'price': product.price}), 200
+        return jsonify({"error": "Product not found"}), 404
+    return (
+        jsonify({"id": product.id, "name": product.name, "price": product.price}),
+        200,
+    )
 
 
 @app.route("/products/<int:id>", methods=["PUT"])
@@ -61,7 +64,9 @@ def update_product(product_id):
     product.price = data["price"]
     db_session.commit()
     return (
-        jsonify({"id": product.product_id, "name": product.name, "price": product.price}),
+        jsonify(
+            {"id": product.product_id, "name": product.name, "price": product.price}
+        ),
         200,
     )
 
