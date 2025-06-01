@@ -28,3 +28,5 @@ rm products.db
 
 
 pytest
+
+pylint src/ tests/

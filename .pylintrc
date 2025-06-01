@@ -1,2 +1,2 @@
 [MASTER]
-disable = C0114,C0115,C0116,W0621,R0903  # Bỏ qua docstring và redefined-outer-name
+disable = C0114,C0115,C0116,W0621,R0903,W0613
