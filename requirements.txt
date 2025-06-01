@@ -5,3 +5,5 @@ pytest-cov==4.1.0
 flake8==6.1.0
 pylint==3.0.2
 black==23.10.1
+bandit==1.7.9
+Flask-Admin==1.6.1

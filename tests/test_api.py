@@ -5,19 +5,23 @@ from src.database import init_db, db_session, Base, engine
 
 @pytest.fixture
 def client():
-    """Create a test client for the Flask application."""
     app.config["TESTING"] = True
     with app.test_client() as client:
         with app.app_context():
-            # Drop and recreate tables to ensure clean state
             Base.metadata.drop_all(bind=engine)
             init_db()
             yield client
         db_session.remove()
 
 
+def test_admin_access(client):
+    response = client.get("/admin", follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Product Admin" in response.data
+
+
+# Các test case hiện có không thay đổi
 def test_create_product(client):
-    """Test creating a new product."""
     response = client.post("/products", json={"name": "Laptop", "price": 1000.0})
     assert response.status_code == 201
     assert response.json["name"] == "Laptop"
@@ -25,14 +29,12 @@ def test_create_product(client):
 
 
 def test_create_product_missing_data(client):
-    """Test creating a product with missing data."""
     response = client.post("/products", json={"name": "Laptop"})
     assert response.status_code == 400
     assert response.json["error"] == "Missing name or price"
 
 
 def test_get_products(client):
-    """Test retrieving all products."""
     client.post("/products", json={"name": "Laptop", "price": 1000.0})
     response = client.get("/products")
     assert response.status_code == 200
@@ -41,7 +43,6 @@ def test_get_products(client):
 
 
 def test_get_product(client):
-    # Create product and get its ID
     create_response = client.post("/products", json={"name": "Laptop", "price": 1000.0})
     product_id = create_response.json["id"]
     response = client.get(f"/products/{product_id}")
@@ -50,14 +51,12 @@ def test_get_product(client):
 
 
 def test_get_product_not_found(client):
-    """Test retrieving a product that does not exist."""
     response = client.get("/products/999")
     assert response.status_code == 404
     assert response.json["error"] == "Product not found"
 
 
 def test_update_product(client):
-    """Test updating an existing product."""
     create_response = client.post("/products", json={"name": "Laptop", "price": 1000.0})
     product_id = create_response.json["id"]
     response = client.put(
@@ -69,7 +68,6 @@ def test_update_product(client):
 
 
 def test_delete_product(client):
-    """Test deleting a product."""
     create_response = client.post("/products", json={"name": "Laptop", "price": 1000.0})
     product_id = create_response.json["id"]
     response = client.delete(f"/products/{product_id}")
