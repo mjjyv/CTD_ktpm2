@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "df3d058a-c4c1-4dc5-9be8-d2a03f072cd3",
+		"name": "Product Management API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45510813",
+		"_collection_link": "https://nx-6853490.postman.co/workspace/NX's-Workspace~5cd65de6-28d0-4b5a-82a1-795bd966f5c4/collection/45510813-df3d058a-c4c1-4dc5-9be8-d2a03f072cd3?action=share&source=collection_link&creator=45510813"
+	},
+	"item": [
+		{
+			"name": "Create Product",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Response has correct name and price\", () => {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.equal(\"Laptop\");",
+							"    pm.expect(jsonData.price).to.equal(1000.0);",
+							"});",
+							"// Lưu product_id cho các test khác",
+							"pm.environment.set(\"product_id\", pm.response.json().id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Laptop\",\n  \"price\": 1000.0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/products",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET All Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response is an array with at least one product\", () => {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(jsonData[0].name).to.equal(\"Laptop\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET All Products by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response has correct product details\", () => {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.equal(\"Laptop\");",
+							"    pm.expect(jsonData.price).to.equal(1000.0);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Product is updated correctly\", () => {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.equal(\"Updated Laptop\");",
+							"    pm.expect(jsonData.price).to.equal(1200.0);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Laptop\",\n  \"price\": 1200.0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/products/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response confirms deletion\", () => {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.equal(\"Product deleted\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products/3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
