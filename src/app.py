@@ -5,7 +5,7 @@ from src.models import Product
 from src.database import init_db, db_session
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "your-secret-key"  # Cần cho Flask-Admin
+app.config["SECRET_KEY"] = "khkhkh123123"  # Cần cho Flask-Admin
 
 # Khởi tạo database
 init_db()
