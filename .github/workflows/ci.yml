@@ -32,5 +32,5 @@ jobs:
       - name: Build and push Docker image
         if: github.ref == 'refs/heads/main'
         run: |
-          docker build -t <your_docker_hub_username>/product-api:latest .
-          docker push <your_docker_hub_username>/product-api:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/product-api:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/product-api:latest
