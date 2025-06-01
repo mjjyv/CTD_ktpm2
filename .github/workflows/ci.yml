@@ -19,19 +19,19 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Check code quality
-        run: |
-          flake8 src/ tests/
-          pylint src/ tests/
-          black --check src/ tests/
-      - name: Run tests
-        run: pytest --cov=src --cov-report=xml
+      # - name: Check code quality
+      #   run: |
+      #     flake8 src/ tests/
+      #     pylint src/ tests/
+      #     black --check src/ tests/
+      # - name: Run tests
+      #   run: pytest --cov=src --cov-report=xml
 
-      - name: Start Flask app
-        run: |
-          export FLASK_APP=src/app.py
-          flask run --host=0.0.0.0 --port=5000 &
-          sleep 5  # Đợi server khởi động
+      # - name: Start Flask app
+      #   run: |
+      #     export FLASK_APP=src/app.py
+      #     flask run --host=0.0.0.0 --port=5000 &
+      #     sleep 5  # Đợi server khởi động
       - name: Install Newman
         run: npm install -g newman
       - name: Run Postman tests

@@ -32,7 +32,6 @@
 							"    pm.expect(jsonData.name).to.equal(\"Laptop\");",
 							"    pm.expect(jsonData.price).to.equal(1200.0);",
 							"});",
-							"// Lưu product_id cho các test khác",
 							"pm.environment.set(\"product_id\", pm.response.json().id);"
 						],
 						"type": "text/javascript",
