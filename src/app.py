@@ -6,18 +6,22 @@ from src.models import Product
 from src.database import init_db, db_session
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', os.urandom(24).hex())  # Lấy từ biến môi trường hoặc random
+app.config["SECRET_KEY"] = os.getenv(
+    "SECRET_KEY", os.urandom(24).hex()
+)  # Lấy từ biến môi trường hoặc random
 
 # Khởi tạo database
 init_db()
 
 # Khởi tạo Flask-Admin
-admin = Admin(app, name='Product Admin', template_mode='bootstrap4')
+admin = Admin(app, name="Product Admin", template_mode="bootstrap4")
 admin.add_view(ModelView(Product, db_session))
+
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
+
 
 @app.route("/products", methods=["POST"])
 def create_product():
@@ -32,6 +36,7 @@ def create_product():
         201,
     )
 
+
 @app.route("/products", methods=["GET"])
 def get_products():
     products = Product.query.all()
@@ -39,6 +44,7 @@ def get_products():
         jsonify([{"id": p.id, "name": p.name, "price": p.price} for p in products]),
         200,
     )
+
 
 @app.route("/products/<int:product_id>", methods=["GET"])
 def get_product(product_id):
@@ -49,6 +55,7 @@ def get_product(product_id):
         jsonify({"id": product.id, "name": product.name, "price": product.price}),
         200,
     )
+
 
 @app.route("/products/<int:product_id>", methods=["PUT"])
 def update_product(product_id):
@@ -66,6 +73,7 @@ def update_product(product_id):
         200,
     )
 
+
 @app.route("/products/<int:product_id>", methods=["DELETE"])
 def delete_product(product_id):
     product = Product.query.get(product_id)
@@ -74,6 +82,7 @@ def delete_product(product_id):
     db_session.delete(product)
     db_session.commit()
     return jsonify({"message": "Product deleted"}), 200
+
 
 if __name__ == "__main__":
     app.run(debug=False, host="127.0.0.1", port=5000)  # Tắt debug, bind localhost
